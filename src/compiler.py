@@ -558,7 +558,7 @@ def main():
 
         global hlir
         hlir = load_from_p4(args, cache_dir_name)
-        generate_files()
+        #generate_files()
 
         showErrors()
         showWarnings()
