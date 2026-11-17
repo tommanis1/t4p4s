@@ -43,8 +43,8 @@ class ParserCombiner:
         #self.resultingStates[self.parser1.states[0].name] = deep_copy(self.parser1.states[0])
         self.iterateOverStates(self.stateDict1["start"],self.stateDict2["start"])
 
-        for header in self.resultingHeaders:
-            print(header)
+        #for header in self.resultingHeaders:
+            #print(header)
             
         
             # print('checking for vlan tagging')

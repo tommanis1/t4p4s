@@ -299,12 +299,12 @@ def load_from_p4(compiler_args, cache_dir_name):
         
         if 'merge' in args:
             filename2 = args['merge'][0]
-            args['p4incdir'] = args['p4incdir2']
+            args['p4incdir2'] = args['p4incdir']
             check_file_exists(filename2)
             check_file_extension(filename2)
             hlir2 = load_hlir(filename2, cache_dir_name, args['recompile'])
-            hlirInject = load_hlir('./t4p4s/src/p4code/inject.p4','./t4p4s/src/p4code/cache', args['recompile'])
-            merger = P4Aggregator(hlir,hlir2,hlirInject,args['SegmentID1'],args['SegmentID2'])
+            hlirInject = load_hlir('./src/p4code/inject.p4','./src/p4code/cache', args['recompile'])
+            merger = P4Aggregator(hlir,hlir2,hlirInject,1,2) #args['SegmentID1'],args['SegmentID2'])
             merger.run()
             hlir = merger.getResult()
 
