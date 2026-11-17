@@ -4,6 +4,7 @@ from hlir16.p4node import P4Node, deep_copy
 from parserCombiner import ParserCombiner
 from rewrite_p4 import printHLIR
 from filemod import writer
+import json
 
 class P4Aggregator:
 
@@ -59,7 +60,7 @@ class P4Aggregator:
         self.resultingProgram.controls.vec = newControls    
         
 
-        #writer("output.p4",printHLIR(self.resultingProgram),method="w")
+        writer("output.p4",printHLIR(self.resultingProgram),method="w")
         #self.resultingProgram.header_instances.vec = combiner.resultingHeaders
         
         #self.resultingProgram.groups.pathexprs.append(self.p4program2.groups.pathexprs)
@@ -129,8 +130,9 @@ class P4Aggregator:
         
         else:
             for decl in resultingControl.controlLocals:
-                if decl.node_type == "Declaration_Variable":
+                if decl.node_type == "Declaration_Variable" or decl.node_type == "Declaration_Instance":
                     decl.name = self.prefix1 + decl.name
+                    decl.canonical_name = self.prefix1 + decl.canonical_name
             for action in resultingControl.actions:
                 action.name = self.prefix1 + action.name
 
@@ -142,6 +144,8 @@ class P4Aggregator:
             for decl in control2.controlLocals:
                 if decl.node_type == "Declaration_Variable" or decl.node_type == "Declaration_Instance":
                     decl.name = self.prefix2 + decl.name#
+                    if decl.node_type == "Declaration_Instance":
+                        decl.canonical_name = self.prefix2 + decl.canonical_name
                     resultingControl.controlLocals.append(decl)
             if control1.name in IngressNames:
                 resultingControl.controlLocals = resultingControl.controlLocals + [self.p4inject.controls[1].controlLocals[0],
@@ -156,14 +160,26 @@ class P4Aggregator:
                     resultingControl.actions.append(action)
             if control1.name in IngressNames:
                 resultingControl.actions = resultingControl.actions + self.p4inject.controls[1].actions
-                
+            
+            #print("AA::", control2.controlLocals.json_data)
+
             for table in control2.tables:
                 table.canonical_name = self.prefix2 + table.canonical_name
                 resultingControl.tables.append(table)
-            #for controlBlock in control2.body.components:
-                #controlBlock.name == self.prefix2 + controlBlock.name
-                #resultingControl.body.components.append(controlBlock)
-            
+#            for controlBlock in control2.body.components:
+#                print("\n\nCC:: ", controlBlock)
+#                print(json.dumps(controlBlock.json_data, indent=2))
+#                print("\n\n")
+#                if controlBlock.node_type=="MethodCallStatement":
+#                    if controlBlock.methodCall.node_type=="MethodCallExpression":
+#                        print(controlBlock.methodCall.method.expr.decl_ref.name)
+#                        print("--->>> ", controlBlock.methodCall.method.expr.path.name)
+#                        print("--->>> ", controlBlock.methodCall.method.expr.path.json_data)
+            #    print(controlBlock.methodCall)
+            #    controlBlock.name == self.prefix2 + controlBlock.name
+            #    resultingControl.body.components.append(controlBlock)
+#            print("++++++++++++++++++++++++++++")
+#            print(newControl1.components.vec)
             if control1.name in IngressNames:
                 newControl = self.p4inject.controls[1].body.components.vec
                 newControl[0].ifTrue.components[1].ifTrue =  P4Node(init={

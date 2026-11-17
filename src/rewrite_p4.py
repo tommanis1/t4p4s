@@ -1,6 +1,6 @@
 
 from hlir16 import hlir
-
+import json
 
 def expr_to_string(expr):
     if isinstance(expr,str):
@@ -96,6 +96,11 @@ def expr_to_string(expr):
         if 'base_type' in expr:
             args = ', '.join(expr.arguments.map(expr_to_string))
             return f'{expr_to_string(expr.base_type)}<{args}>'
+        if 'baseType' in expr:
+            if 'arguments' in expr:
+                if expr.arguments.node_type=="Vector<Type>": #TODO
+                    args = ', '.join([expr_to_string(ar) for ar in expr.arguments.vec])
+                return f'{expr.baseType.path.name}<{args}>'
         return f'{expr.baseType.path.name}'
     if expr.node_type == 'Declaration_Instance':
         #direct_meter<bit<32>>(MeterType.packets) NF1_meter;
@@ -150,8 +155,13 @@ def print_body_component(level, node):
             elif name=='advance':
                 return f'{indent}{expr_to_string(mc.method.expr)}.{name}({exprs});\r\n'
             elif name=='count':
-                return f'{indent}{expr_to_string(mc.method.expr)}.{name}({exprs});\r\n'
+                return f'{indent}{mc.method.expr.decl_ref.name}.{name}({exprs});\r\n'
+                #return f'{indent}{expr_to_string(mc.method.expr)}.{name}({exprs});\r\n'
             elif name=='get':
+                return f'{indent}{mc.method.expr.decl_ref.name}.{name}({exprs});\r\n'
+            elif name=='write':
+                return f'{indent}{mc.method.expr.decl_ref.name}.{name}({exprs});\r\n'
+            elif name=='read':
                 return f'{indent}{mc.method.expr.decl_ref.name}.{name}({exprs});\r\n'
             else:
                 return f'{indent}{mc.type.name}.{name}({exprs});\r\n'
