@@ -51,7 +51,7 @@ generated_code += "\n"
 # Copyright 2021 Eotvos Lorand University, Budapest, Hungary ## src/hardware_indep/stateful_memory_type.h.py:3
 
 generated_code += add_code("")
-from utils.codegen import format_type ## src/hardware_indep/stateful_memory_type.h.py:5
+from hlir16.utils.codegen import format_type ## src/hardware_indep/stateful_memory_type.h.py:5
 from hlir16.hlir_model import model_specific_infos, packets_by_model ## src/hardware_indep/stateful_memory_type.h.py:6
 
 generated_code += add_code("")
