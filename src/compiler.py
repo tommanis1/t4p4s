@@ -455,8 +455,10 @@ def make_dir(path, description):
 def make_dirs(cache_dir_name):
     """Makes directories if they do not exist"""
     if not os.path.isdir(args['compiler_files_dir']):
+        make_dir(args['compiler_files_dir'], 'desugared compiler files')
+
         print("Compiler files path is missing", file=sys.stderr)
-        sys.exit(1)
+        # sys.exit(1)
 
     make_dir(args['desugared_path'], 'desugared compiler files')
     make_dir(args['generated_dir'], 'generated files')

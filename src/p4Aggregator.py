@@ -3,18 +3,20 @@ from hlir16.hlirx_regroup import attrs_regroup_path_expressions, attrs_regroup_s
 from hlir16.p4node import P4Node, deep_copy
 from parserCombiner import ParserCombiner
 from rewrite_p4 import printHLIR
-from filemod import writer
+# from filemod import writer
 
 class P4Aggregator:
 
     prefix1 = "NF1_"
     prefix2 = "NF2_"
-    def __init__(self,p4program1,p4program2,p4inject,id1,id2):
+    def __init__(self,p4program1,p4program2,p4inject):
         self.p4program1 = p4program1
+        if isinstance(p4program2, str):
+            raise TypeError("p4program2 cannot be a string")
         self.p4program2 = p4program2
         self.p4inject = p4inject
-        self.id1=id1
-        self.id2=id2
+        # self.id1=id1
+        # self.id2=id2
         self.resultingProgram = deep_copy(p4program1)
     
     def run(self):

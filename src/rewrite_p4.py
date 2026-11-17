@@ -13,7 +13,7 @@ def expr_to_string(expr):
                 return f'{expr.value}'
         if expr.base == 16:
             return f'{expr.value:#X}'
-        breakpoint()
+        # breakpoint()
         return 'TODO_CONST_EXPR'
     if expr.node_type == 'Member':
         if "fld_ref" in expr and "hdr_ref" in expr and expr.hdr_ref.name != "all_metadatas":
@@ -120,7 +120,7 @@ def expr_to_string(expr):
     if expr.node_type == 'Entry':
         keys = ', '.join(expr.keys.components.map(expr_to_string))
         return f'({keys}) : {expr_to_string(expr.action)}'
-    breakpoint()
+    # breakpoint()
     return 'TODO_EXPR'
 
 def print_body_component(level, node):
@@ -184,7 +184,7 @@ def print_body_component(level, node):
     if node.node_type == 'EmptyStatement':
         return "    "
     #if node.node_type == 'IndexedVector<StatOrDecl>'
-    breakpoint()
+    # breakpoint()
     return 'TODO_COMP'
 
 def printHLIR(hlir):

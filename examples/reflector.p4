@@ -1,5 +1,6 @@
 /* -*- P4_16 -*- */
-#include "common-boilerplate-pre.p4"
+#include "include/v1-boilerplate-pre.p4"
+
 
 struct metadata {
     /* empty */
